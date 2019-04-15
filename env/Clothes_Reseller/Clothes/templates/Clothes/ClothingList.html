@@ -1,0 +1,47 @@
+{% extends "Base/base.html" %}
+{% load static %}
+{% block content %}
+<br/>
+<section id="listings">
+  <div class="container">
+    <section class="" id="portfolio">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-12 text-center">
+              <h2 class="section-heading">Listings</h2>
+              <h3 class="section-subheading text-muted">Latest used clothes that you should pick up.</h3>
+              <br/>
+              <form action="." method="POST">
+                  {% csrf_token %}
+                <div class="input-group">
+                  <input type="text" name="search_for" class="form-control" placeholder="Search for..." aria-label="Search for...">
+                  <span class="input-group-btn">
+                    <button class="btn btn-success" type="submit">Go!</button>
+                  </span>
+                </div>
+              </form>
+              {% if searched %}
+              <div class="alert alert-primary" role="alert">
+                  Results for <strong>{{searched}}</strong>
+              </div>
+              {% endif %}
+            </div>
+          </div>
+          <br/>
+          <div class="row">
+          {% for clothes in Clothing %}
+          <div class="card" style="width: 20rem;">
+            <br/>
+            <img class="card-img-top" src="{{clothes.Image.url}}" style="width:300px; height:214px" alt="{{clothes.Description}}">
+            <div class="card-body">
+              <h4 class="card-title">{{clothes.Name}}</h4>
+              <p class="card-text">{{clothes.User}}</p>
+              <a href="{% url 'ClothingDetail' clothes.id %}" class="btn btn-info"><strong>View</strong></a>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </section>
+  </div>
+</section>
+{%endblock %}

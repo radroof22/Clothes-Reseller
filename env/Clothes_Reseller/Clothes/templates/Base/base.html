@@ -1,0 +1,31 @@
+{% load static %}
+<head>
+  <title>{% block title %} {% endblock %}</title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="{% static 'font-awesome/font-awesome/css/font-awesome.min.css' %}">
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">Navbar</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        <a class="nav-item nav-link" href="{% url 'List' %}">Listings</a>
+        <a class="nav-item nav-link" href="{% url 'NewClothing' %}">New Clothing</a>        
+        <a class="nav-item nav-link" href="{% url 'Profile' %}">Profile</a>
+      </div>
+    </div>
+  </nav>
+  {% block content %}
+  {% endblock %}
+  <footer>
+    <center>
+      Copyright 2017
+    </center>
+  </footer>
+</body>
+    

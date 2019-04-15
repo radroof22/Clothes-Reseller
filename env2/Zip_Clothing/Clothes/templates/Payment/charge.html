@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %}Zip |  {% endblock %}
+
+{% block content %}
+
+<div class="jumbotron jumbotron-fluid">
+    <div class="container">
+    <h1 class="display-4">You have just purchased <strong>{{product.Name}}</strong></h1>
+    <p class="lead">The seller will be notified to ship the product to you, once you confirm your shipping address, and the seller will than ship the product to you.</p>
+    <br/>
+    <form method="POST" action="/confirm_shipping_address">
+        <input type="address" name="address">
+        <input type="hidden" name="Prod_id" value="{{product.id}}">
+    </form>
+    </div>
+  </div>
+
+{% endblock %}

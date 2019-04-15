@@ -1,0 +1,42 @@
+<div class="col-md-5" id="accord_of_products">
+    <h1 class="text-danger">Listings</h1>
+    <hr>
+    <a href="{% url 'Create_Product' %}" class="alert-link"><div class="alert" id="new_item_alert"><center>List New Item </center></div></a>
+        <div id="accordion" role="tablist">
+            {% for prod in user_posted_products %}
+            <div class="card">
+                    <div class="card-header cust_color" role="tab" id="heading{{prod.id}}">
+                        <h5 class="mb-0">
+                        <a class="collapsed" data-toggle="collapse" href="#collapse{{prod.id}}" aria-expanded="false" aria-controls="collapse{{prod.id}}">
+                            {{prod.Name}}   <span class="badge badge-danger">${{prod.Price}}</span>
+                        </a>
+                        </h5>
+                    </div>
+                    <div id="collapse{{prod.id}}" class="collapse"  role="tabpanel" aria-labelledby="heading{{prod.id}}" data-parent="#accordion">
+                        <div class="card-body">
+                        <div class="cust-color">
+                            <div class="row">
+                                
+                                <div class="col-md-6">
+                                {{prod.Description}}
+                                </div>
+                                <div class="col-md-6">
+                                    <center>
+                                        <img src="{{prod.Image.url}}" class="listed_image">
+                                        <br/>
+                                        <div class="alert alert-danger" role="alert">
+                                            {{prod.DateTime}}
+                                        </div>
+                                    </center>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                    </div>
+            {% endfor %}
+        </div>
+    <ul>
+            <li><a href="{{prod.get_url.url}}">{{prod}}</a></li>
+    </ul>
+</div>

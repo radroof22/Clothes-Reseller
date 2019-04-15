@@ -1,0 +1,154 @@
+{% extends 'base.html' %}
+{% block title %}Zip | Sign Up {% endblock %}
+
+{% block content %}
+
+<h1>Signup</h1>
+
+<div id="registration" class="row">
+    <div class="col-md-6">
+        <!-- Carosel of Current Images -->
+        <div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel">
+            <div class="carousel-inner">
+                {% for prod in ex_clothes %}
+                    {% if ex_clothes.0 == prod %}
+                    <div class="carousel-item active">
+                        <img class="d-block w-100 h-200" src="{{prod.Image.url}}" alt="{{prod.Name}}">
+                    </div>
+                    {% else %}
+                    <div class="carousel-item">
+                        <img class="d-block w-100" src="{{prod.Image.url}}" alt="{{prod.Name}}">
+                    </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            
+        </div>
+    </div>
+    <div class="col-md-6">
+        <!-- Form -->
+        <div class="container-fluid" id="login">
+            <a href="{% url 'Login' %}" role="alert" class="alert alert-danger">
+                    Already Have An Account?
+            </a>
+        </div>
+        <form action="." method="POST">
+            {% csrf_token %}
+            <label for="username">Username</label>
+            <input name="Username" v-model="form.username" v-on:keyup="updateSubmittable" id="username" placeholder="John_Doe123">
+            <br/>
+            <label for="email">Email</label>
+            <input name="Email" v-on:keyup="vaildateEmail" v-model="form.email" id="email" placeholder="JohnDoe@zip.com" type="email">
+            <br/>
+            <label for="password">Password</label>
+            <input name="Password" v-model="form.password"  v-on:keyup="updateSubmittable" id="password" type="password">
+            <br/>
+            <label for="conf_password">Confirm Password</label>
+            <input name="conf_Password" v-model="form.conf_password" v-on:keyup="checkPasswords" id="conf_password" type="password">
+            <br/>
+            <br/>
+            <div class="row"  >
+            <div class="col-sm-4">
+                <button class="btn btn-lg btn-danger " v-bind:class="{'': this.submittable,  disabled:!this.submittable}"  type="submit">Signup</button>
+                <br/>
+                <p>{{error}}</p>
+            </div>
+            <div class="col-sm-8">
+                <div class="container-fluid">
+                    <br/>
+                    <ul class="list-group">
+                        <li v-show="!pass_match" class="list-group-item danger">Password and Confirmation Must Be the Same</li>
+                        <li v-show = "!email_valid" class="list-group-item">Enter Valid Email</li>
+                    </ul>
+                </div>
+            </div>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<script>
+    var registration = new Vue({
+        el: "#registration",
+        data: {
+            
+            form: {
+                email: "",
+                password: "",
+                conf_password: "",
+                username: "",
+            },
+            pass_match: false,
+            email_valid:  false,
+            
+            
+            submittable: false
+        },
+        methods : {
+            checkPasswords: function (e) {
+                if (this.form.password == this.form.conf_password){
+                    this.pass_match = true;
+                }else{
+                    this.pass_match = false
+                }
+                this.updateSubmittable()
+            },
+            vaildateEmail: function(){
+                if (this.form.email.includes("@") && this.form.email.includes(".")){
+                    this.email_valid = true;
+                }else{
+                    this.email_valid = false;
+                }
+                this.updateSubmittable()
+            },
+            checkLetters: function(input_value){
+                var letters = /^[A-Za-z]+$/;
+                console.log(input_value)
+                if(!input_value.match(" ") || input_value == ""){
+                    return true;
+                }else{
+                    return false;
+                }
+            },
+            updateSubmittable: function(){
+                console.log(this.checkLetters(this.form.conf_password))
+                console.log(this.checkLetters(this.form.username))
+                console.log(this.checkLetters(this.form.email))
+                console.log(this.checkLetters(this.form.password))
+                this.submittable = this.pass_match 
+                    && this.email_valid 
+                    && this.checkLetters(this.form.username)
+                    && this.checkLetters(this.form.email)
+                    && this.checkLetters(this.form.password)
+                    && this.checkLetters(this.form.conf_password)
+            },
+            getSubmit: function(){
+                return this.submittable
+            }
+            
+        },
+      
+        
+    })
+</script>
+
+<style>
+    #login{
+        margin-bottom: 5%;
+    }
+    password{
+        margin-top: 5%;
+        margin-bottom: 5%;
+    }
+    footer{
+        position: fixed;
+        height: 50px;
+        left: 0px;
+        right: 0px;
+    }
+    li{
+            color: black
+    }
+</style>
+{% endblock %}

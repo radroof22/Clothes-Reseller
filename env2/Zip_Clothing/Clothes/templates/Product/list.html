@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block title %}Zip | List {% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+<div class="row">
+    <div id="search" class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="Looking For Something...?" aria-label="Product" aria-describedby="basic-addon1">
+    </div>
+</div>
+{% for products in view_products %}
+    <br/>
+    <div class="row">
+        {% for product in products %}
+            {% if product.Bought == False %}
+            <div class="col-md-3" id="cards_products">
+                <div class="card" style="width: 18rem; height: 30rem;">
+                    <img class="card-img-top" id="img_prod" src="{{product.Image.url}}" alt="{{product.Name}}">
+                    <div class="card-body">
+                        <h5 class="card-title" >{{product.Name}}</h5>
+                        <p class="card-text">{{product.Description}}</p>
+                        <a href="{{product.get_url.url}}" class="btn btn-danger">See Details</a>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+    <br/>
+{% endfor %}
+</div>
+
+</div>
+<style>
+    #img_prod {
+        width: 17.88rem;
+        height: 20rem;
+    }
+    #search {
+        margin-top: 2%;
+    }
+    p {
+        color: black
+        
+    }
+    h5{
+        color:#DC3545;
+    }
+
+</style>
+{% endblock %}

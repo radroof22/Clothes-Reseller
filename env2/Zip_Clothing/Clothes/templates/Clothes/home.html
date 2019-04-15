@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% block title %}Zip | Home {% endblock %}
+{% load static %}
+{% block content %}
+    <div class="row">
+        <!-- Image Overlay with text -->
+        <div class="col-md-5">
+            <div class="row">
+                <div class="col-md-11" ><img id="home_overlay" src="{% static 'Clothes/Images/home_with_overlay.jpg' %}">
+                </div>
+                <div class="col-md-1" ><h1 id="quality"><strong>Quality Clothes</strong></h1><h3>At a fair price.</h3></div>      
+            </div>
+        </div>
+        <!-- Products Live -->
+        <div class="col-md-7">
+            <div class="row">
+                <div class="col-md-3">
+                    <!-- Spacing between image and products -->
+                </div>
+                <!-- Grid -->
+                <div class="col-md-9">
+                    {% for list in random_products %}
+                        
+                        <div class="row">
+                            {% for product in list %}
+                                {% if product.Bought == False %}
+                                    <div class="col-lg-6">
+                                        <div class="card" style="width: 16rem;" id="prod_card">
+                                            <center>
+                                                <img class="card-img-top" id="img_prod" src="{{product.Image.url}}" alt="{{product.Name}}">
+                                                <div class="card-body">
+                                                    <h4 class="card-title">{{product.Name}}</h4>
+                                                </div>
+                                            </center>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                        {% endfor %}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        
+    </div>  
+
+    <style>
+        #home_overlay{
+            height:90%;
+            object-fit: cover;
+            /* clip: rect(100px,60px,100px,90px); */
+        }
+        #quality {
+            color: #DC3545;
+        }
+        #img_prod{
+            width:15rem;
+            height:11rem;
+        }
+        #prod_card{
+            color:#DC3545;
+            margin-bottom:5px;
+            margin-top:5px;
+            margin-right: 1rem;
+            margin-left:10px;
+        }
+    </style>
+
+{% endblock %}

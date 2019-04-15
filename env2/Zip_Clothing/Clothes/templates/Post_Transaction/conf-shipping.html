@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}Zip | Confirm Shipping {% endblock %}
+
+{% block content %}
+<div class="container">
+    <br/><h5>Please submit a proof of shippment. This should be a receipt for the product you shipped to your buyer. This confirms to us that you have fullfilled your end of the transaction and once the buyer has confirmed he has recieved the product, the money will be transfered to you account.</h5>
+    <form action="." method="POST">
+        {% csrf_token %}
+        <br/>
+        <input type='file' name="image_shipping"/><br/><br/><br/>
+        <button type="submit" class="btn btn-danger">Submit</button>
+        <br/><br/>
+    </form>
+</div>
+{% endblock %}

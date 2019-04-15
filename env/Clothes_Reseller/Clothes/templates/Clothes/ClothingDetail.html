@@ -1,0 +1,39 @@
+{% extends "Base/base.html" %}
+{% load static %}
+{% block content %}
+<br/>
+<br/>
+<div class="container">
+    <div class="row">
+    <div class="col-md-7">
+        <img src="{{clothing.Image.url}}" style="width: 700px; height:500px" class="img-fluid" alt="Responsive image">
+        <br/>
+        <br/>
+        <br/>
+        <div class="alert alert-warning" role="alert">
+                {{clothing.DateTime_Posted}}
+        </div>
+    </div>
+    <div class="col-md-5">
+        <h1>{{clothing.Name}} <span class="badge badge-primary">{{clothing.User}}</span></h1>
+       
+        <div class="alert alert-secondary text-center" role="alert">
+            Email Me At: <strong>{{clothing.User.email}}</strong>
+        </div>
+        <p> {{clothing.Description}} </p>
+        {% if request.user == clothing.User %}
+            <form action="." method="POST">
+                {% csrf_token %}
+                <button name="delete" class="btn btn-lg btn-danger" type="submit">Delete</button>
+            </form>
+
+        {% else %}
+            <form action="." method="POST">
+                {% csrf_token %}
+                <button name="add_cart" class="btn btn-lg btn-success" type="submit">Purchase</button>
+            </form>
+        {% endif %}
+    </div>
+</div>
+</div>
+{%endblock%}

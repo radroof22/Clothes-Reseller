@@ -1,0 +1,81 @@
+{% extends "Base/base.html" %}
+{% load static %}
+{% block content %}
+<br/>
+<center>
+<div class="container-fluid">
+    <div class="row">
+    <!-- Listed -->
+    <div class="col-md-3">
+        <div class="alert alert-primary" role="alert">
+        Listed
+        </div>
+        {% for listing in current_active_posts %}
+            <p><a href='{% url "ClothingDetail" listing.id %}'>{{listing}}</a></p>
+        {% endfor %}
+    </div>
+    <!-- Sold -->
+    <div class="col-md-6">
+        <div class="alert alert-success" role="alert">
+            Notifications
+        </div>
+        {% for listing in current_purchased_posts %}
+            <div class="card" style="width: 20rem;">
+                <div class="alert alert-dark" role="alert">
+                    Need Shipping
+                </div>
+                <div class="card-body">
+                    <h4 class="card-title"><strong>{{listing.Clothing_post.User}}</strong> bought <strong>{{listing.Clothing_post.Name}}</strong></h4>
+                    <a href="{% url 'Shipping_Confirm' listing.id %}" class="btn btn-secondary">Confirm Shipment</a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    <!-- Cart -->
+    <div class="col-md-3">
+        <div class="alert alert-warning" role="alert">
+            Current Cart
+        </div>
+            
+            {% if cart == None %}
+                <p>You cart is currently <strong>empty</strong></p>
+            {% else %}
+                <div class='row'>
+                    <div class="col-sm-6">
+                        <form action="." method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" value="ALL" name="item_t_delete"/>
+                            <button class="btn btn-md btn-outline-danger" type="submit">
+                                Clear Cart?
+                            </button>
+                        </form>
+                    </div>
+                    <div class="col-sm-6">                    
+                        <form action="." method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" value="ALL" name="buy_times"/>
+                            <button class="btn btn-md btn-outline-success" type="submit">
+                                Buy Items?
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                <ul class="list-group">
+                {% for item in cart %}
+                    <a href="{% url 'ClothingDetail' item.id %}"><li class="list-group-item">{{item.Clothing_Item.Name}} </a> 
+                        <br/><form action="." method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" value="{{item.id}}" name="item_t_delete"/>
+                            <button class="btn btn-warning"><a href="{% url 'Profile' %}">
+                                <i class="fa fa-trash" aria-hidden="true"></i>
+                            </a></button>
+                        </form>
+                    </li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+    </div>
+</div>
+</div>
+</center>
+{% endblock %}

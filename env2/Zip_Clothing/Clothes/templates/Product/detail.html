@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+{% block title %}Zip | {{product.Name}} {% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row" id="content">
+        <div class="col-md-5">
+            <img src="{{product.Image.url}}" alt="{{product.Name}}" id="main_image"/>
+        </div>
+        <div class="col-md-7">
+            <div class="row">
+                <div class="col-sm-4 title-detail">
+                    <h1><strong>{{product.Name}}</strong></h1>
+                </div>
+                <div class="col-sm-5" id="datetime">
+                    <h4>{{product.DateTime}}</h4>
+                </div>
+                <div class="col-sm-3" id="buy_down">
+                    {% if is_owner %}
+                        <form action="." method="POST">
+                            {% csrf_token %}
+                            <button class="btn-lg btn-danger price_inc">Delete</button>
+                        </form>
+                    {% elif user == AnonymousUser %}
+                        <a href="{% url 'Login' %}"><button class="btn-lg btn-danger price_inc">Login</button></a>
+
+                    {% else %}
+                        {% comment %} For People Who are Purchasing the item {% endcomment %}
+                    
+                        <form action="/charge" method="post">
+                            {% csrf_token %}
+                            <input type='hidden' name='Prod_id' value="{{product.id}}">
+                            <article>
+                              <label>
+                                <span>Amount is {{product.Price}}</span>
+                              </label>
+                            </article>
+                        
+                            <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                                    data-key="{{ pub_key }}"
+                                    data-description="Zip Trading is Charging for the purchase of '{{ product.Price }}'"
+                                    data-amount="{{ prod_price}}"
+                                    data-locale="auto"></script>
+                          </form>
+                    {% endif %}
+                </div>
+            </div>
+            <hr/>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="alert alert-danger price_inc" role="alert">
+                        Seller: <strong>{{product.Seller}}</strong>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="badge badge-danger price_inc" role="alert">
+                        $<strong>{{product.Price}}</strong>
+                    </div>
+                </div>
+            </div>
+            <div class="container-fluid" id="description">
+                <p>{{product.Description}}</p>
+            </div>
+            
+        </div>
+    </div>
+
+    
+
+</div>
+<style>
+    #content{
+        margin-top:2%
+    }
+    #main_image{
+        width:30rem
+    }
+    .price_inc {
+        width: 100%;
+        height:100%;
+    }
+    .badge {
+        font-size: 35px
+    }
+    .alert {
+        font-size:20px
+    }
+    .btn {
+        height:100%
+    }
+    .title-detail{
+        font-size:20rem
+    }
+    #datetime{
+        margin-top:10px;
+    }
+    #buy_down{
+        margin-top:10px;
+    }
+    #description{
+        margin-top:20px
+    }
+    footer{
+        position: fixed;
+        height: 50px;
+        left: 0px;
+        right: 0px;
+    }
+    
+    form article label {
+        display: block;
+        margin: 5px;
+    }
+
+    form .submit {
+        margin: 15px 0;
+    }
+</style>
+{% endblock %}

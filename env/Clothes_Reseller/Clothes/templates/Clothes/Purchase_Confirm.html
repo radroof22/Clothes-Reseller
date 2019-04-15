@@ -1,0 +1,48 @@
+{% extends "Base/base.html" %}
+{% load static %}
+{% block content %}
+
+<br/>
+<div class="container-fluid">
+    <div class="row">
+
+        <div class="col-md-6">
+            <!-- Item Image -->
+            <div class="col-md-6 text-center">
+                <img src="{{item.Image.url}}" style="width: 350px; height:250px" class="img-fluid" alt="Responsive image">
+            </div>
+            <div class="col-md-6">
+                <h1>{{item.Name}} <span class="badge badge-primary">{{item.User}}</span></h1>
+                <div class='row'>
+                    <div class='col-lg-12'><hr></div>
+                </div>
+                <p> {{item.Description}} </p>
+                <div class="alert alert-danger" role="alert">
+                    Item costs ... <strong>${{item.Price}}</strong>
+                </div>
+            </div>
+        </div>
+        <!-- Form -->
+        <div class="col-md-6">
+            <form action="." method="POST">
+                <div class="form-group">
+                    <label for="firstName">First Name</label>
+                    <input name="firstName" type="name" class="form-control" id="firstName" aria-describedby="first_name_help" placeholder="John">
+                </div>
+                <div class="form-group">
+                    <label for="lastName">Last Name</label>
+                    <input name="lastName" type="name" class="form-control" id="lastName" aria-describedby="last_name_help" placeholder="Doe">
+                </div>
+                <div class="form-group">
+                    <label for="address">Address</label>
+                    <input name="address" type="address" class="form-control" id="address" aria-describedby="addressHelp" placeholder="221 Baker Street, London, UK">
+                    <small id="addressHelp" class="form-text text-muted">We'll never share your address with anyone else.</small>
+                </div>
+                <p><input type="submit" value="Proceed" /></p>
+            </form>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

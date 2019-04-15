@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block title %} Zip | Confirm Shipping {% endblock %}
+
+{% block content %}
+<div class="container">
+    <br/><h5>Confirm that you have recieved the product <strong>{{trans.Product.Name}}</strong>. After this, the seller will be paid so the transaction can be complete.</h5>
+    <form action="." method="POST">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Confirm</button>
+        <br/><br/>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,159 @@
+{% extends 'base.html' %}
+{% block title %}Zip | Profile {% endblock %}
+
+{% block content %}
+
+    <br/>
+    <div class="row">
+        <div class="col-md-2">
+            <div class="card" style="width: 10rem;">
+                <div class="card-header" style="color: black">
+                    Account Information
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item bg-danger" data-toggle="modal" data-target="#listedModal"><strong>Products Posted</strong></li>
+                    <li class="list-group-item bg-danger">Username: <strong>{{user.username}}</strong></li>
+                    <li class="list-group-item bg-danger">Email: <strong>{{user.email}}</strong></li>
+                    <li class="list-group-item bg-danger"><a href="{% url 'Logout' %}"><strong>Logout</strong></a></li>
+                </ul>
+            </div>
+            
+        </div>
+        <div class="col-md-5">
+            <!-- Buyer Notification -->
+            <h1 class="text-danger">Buyer Notifications</h1>
+            {% for trans in buy_transactions %}
+            <!-- Single Card -->
+            <div class="card text-white bg-danger mb-3" style="max-width: 20rem;">
+                
+                <div class="card-body">
+                    <h4 class="card-title">{{trans.Product.Name}}</h4>
+                    <!-- NEEDS TO BE SHIPPED -->
+                    {% if trans.Shipping_Receipt == None and trans.Shipped == False %}
+                        <p class="card-text">We are waiting for the seller to ship the product to you!</p>    
+                    {% else %}
+                        <!-- NEEDS TO BE RECIEVED -->
+                        {% if trans.Shipped == True and trans.Completed == False %}
+                            <p class="card-text">Your seller just sent you the product! <a href="{% url 'Conf-Receive' trans.id %}">Click here to confirm that you got the product.</a></p> 
+                        {% else %} 
+                            <!-- TRANSACTION FINISHED -->
+                            {% if trans.Completed %}
+                                <p class="card-text">You just bought a piece of clothing using Zip Trading. Congratulations!</p>
+                            {% endif %}   
+                        {% endif %}
+                    {% endif %} 
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="col-md-5">
+            <!-- Seller Notification -->
+            <h1 class="text-danger">Seller Notifications</h1>
+            {% for trans in user_transactions %}
+            <!-- Single Card -->
+            <div class="card text-white bg-danger mb-3" style="max-width: 20rem;">
+                
+                <div class="card-body">
+                    <h4 class="card-title">{{trans.Product.Name}} {% if trans.Completed %}<a href="{% url 'Off-Notifications' trans.id %}"><i class="fa fa-check" aria-hidden="true"></i></a>{% endif %}</h4>
+                    <!-- NEEDS TO BE SHIPPED -->
+                    {% if trans.Shipping_Receipt == None and trans.Shipped == False %}
+                        <p class="card-text">Someone has bought your clothing, {{trans.Product.Name}}! <a href="{% url 'Conf-Shipping' trans.id %}">Click here to confirm the shippment so the buyer knows the product is coming.</a></p>
+                    {% else %}
+                        <!-- NEEDS TO BE RECIEVED -->
+                        {% if trans.Shipped == True and trans.Completed == False %}
+                            <p class="card-text">We are waiting for the buyer to confirm that they received the product. Once they have confirmed, the money will be transfered to your account. </p>
+                        {% else %} 
+                            <!-- TRANSACTION FINISHED -->
+                            {% if trans.Completed %}
+                                <p class="card-text">Another day another sale. Congratulations, you just sold some clothes for cash. You buyer now has your clothes and you have your money in your account.</p>
+                            {% endif %}   
+                        {% endif %}
+                    {% endif %}
+                </div>
+                
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="listedModal" tabindex="-1" role="dialog" aria-labelledby="listedModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="listedModalLabel">Clothes Posted by You</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+                    <div id="accord_of_products">
+                        <h1 class="text-danger">Listings</h1>
+                        <hr>
+                        <a href="{% url 'Create_Product' %}" class="alert-link"><div class="alert" id="new_item_alert"><center>List New Item </center></div></a>
+                            <div id="accordion" role="tablist">
+                                {% for prod in user_posted_products %}
+                                <div class="card">
+                                        <div class="card-header cust_color" role="tab" id="heading{{prod.id}}">
+                                            <h5 class="mb-0">
+                                            <a class="collapsed" data-toggle="collapse" href="#collapse{{prod.id}}" aria-expanded="false" aria-controls="collapse{{prod.id}}">
+                                                {{prod.Name}}   <span class="badge badge-danger">${{prod.Price}}</span>
+                                            </a>
+                                            </h5>
+                                        </div>
+                                        <div id="collapse{{prod.id}}" class="collapse"  role="tabpanel" aria-labelledby="heading{{prod.id}}" data-parent="#accordion">
+                                            <div class="card-body">
+                                            <div class="cust-color">
+                                                <div class="row">
+                                                    
+                                                    <div class="col-md-6">
+                                                    {{prod.Description}}
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <center>
+                                                            <img src="{{prod.Image.url}}" class="listed_image">
+                                                            <br/>
+                                                            <div class="alert alert-danger" role="alert">
+                                                                {{prod.DateTime}}
+                                                            </div>
+                                                        </center>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            </div>
+                                        </div>
+                                        </div>
+                                {% endfor %}
+                            </div>
+                    </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+    </div>
+    
+<style>
+    #accord_of_products{
+        color:black;
+    }
+    .cust_color{
+        background: black;
+            
+    }
+    a, a:hover, a:active, a:visited {
+        color: white
+    }
+    .listed_image{
+        width: 100px;;
+    }
+    #new_item_alert{
+        background: #DC3545; 
+        max-width: 100%
+    }
+    #listedModal{
+        color: black;
+    }
+    
+</style>
+{% endblock %}

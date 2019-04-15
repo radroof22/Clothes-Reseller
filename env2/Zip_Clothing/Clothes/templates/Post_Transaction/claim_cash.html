@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block title %}Zip | Claim Cash {% endblock %}
+
+{% block content %}
+
+
+<form action="/claim_cash" method="post">
+    {% csrf_token %}
+    <input type='hidden' name='Prod_id' value="{{product.id}}">
+    <article>
+      <label>
+        <span>Amount is {{product.Price}}</span>
+      </label>
+    </article>
+    <label for="stripeAccount">Enter Stripe Account</label>
+    <input type="text" id="stripeAccount" name="stripeAccount"/>
+    <br/>
+    <p>The transaction will be delayed by a couple days, don't worry.</p>
+  </form>
+
+{% endblock %}

@@ -1,0 +1,140 @@
+{% extends 'base.html' %}
+{% block title %}Zip | Create Product {% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-8">
+            <form action="" method="post" enctype="multipart/form-data">
+                <hr>
+                <h1 class="title">Add Product to Marketplace</h1>
+                <hr>
+                {% csrf_token %}
+
+                <div class="form-group">
+                    <div class="form-group row">
+                        <div class="col-sm-2">
+                            <label for="name">Name</label>
+                        </div>
+                        <div class="col-sm-10">
+                            <input type="text" name="Name" id="name">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="form-group row">
+                        <div class="col-sm-2">
+                            <label id="lab_desc" for="description">Description</label>
+                        </div>
+                            <div class="col-sm-10">
+                                <textarea  rows="3"  name="Description" id="description" class="form-control"></textarea><br/>
+                        </div>
+                        <br/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-group row">
+                        <div class="col-sm-2">
+                            <label id="lab_desc" for="description">Size</label>
+                        </div>
+                            <div class="col-sm-10">
+                                <input type="text" name="Size" id="size" class="form-control" ><br/>
+                        </div>
+                        <br/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-group row">
+                        <div class="col-sm-2">
+                            <label for="image">Image</label>
+                        </div>
+                            <div class="col-sm-10">
+                                <input type="file" name="Image" id="image">
+                            </div>
+                        <br/>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="form-group row">
+                        <div class="col-sm-2">
+                            <label for="price">Price</label>
+                        </div>
+                        <div class="col-sm-10">
+   
+                            <div class="input-group mb-5">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text"><strong>$</strong> </div>
+                                </div>
+                                <input type="text" class="form-control" aria-label="Amount">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                        <button id="sub" type="submit" class="btn btn-lg btn-danger">Add Post</button>
+                </div>
+            </form>
+        </div>
+
+
+        <div class="col-md-4">
+            <div class="jumbotron jumbotron-fluid cust_jumbo">
+                <div class="container">
+                    <h1 class="display-4" id="expectation_title">Expectations</h1>
+                    <div class="list-group lead">
+                            <div class="list-group-item list-group-item-action flex-column align-items-start">
+                              <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1">Deliver Product</h5>
+                              </div>
+                              <p class="mb-1">As Part of the <strong>Zip Trading</strong> Community, you are expected to deliver your product to the consumer once the give you their address. This includes taking a picture of the receipt of your product upon giving to local postal for shipping</p>
+                            </div>
+                            <div  class="list-group-item list-group-item-action flex-column align-items-start">
+                              <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1">Integrity of Product</h5>
+                              </div>
+                              <p class="mb-1">As a seller, you must have your product be of quality as depicted in the image you attach. Therefore, the picture of your product must be of the actual product you will be delivering to the buyer</p>
+                            </div>
+                            <div class="list-group-item list-group-item-action flex-column align-items-start">
+                              <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1">Communication</h5>
+                              </div>
+                              <p class="mb-1">Be kind with your buyer if you begin any sort of communication between the two of you.</p>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    
+    .jumbotron{
+        
+        background-color:black !important;
+    }
+    .list-group-item{
+        background-color: #DC3545;
+        color:white;
+    }
+    #description{
+        min-height:200px;
+        min-width: 400px;
+    }
+    #dol_fill{
+        size: 125%;
+    }
+    hr{
+        color: white;
+    }
+    #sub{
+        float: right;
+    }
+    .input-group-text{
+        padding-right:5px;
+        size: 125%;
+    }
+    
+</style>
+{% endblock %}

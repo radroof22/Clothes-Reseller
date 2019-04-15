@@ -1,0 +1,242 @@
+{% extends 'base.html' %}
+{% block title %}Zip | Profile {% endblock %}
+
+{% block content %}
+
+
+<div class="container-fluid" id="vApp">
+    <ul class="nav nav-tabs" role="tablist">
+            <li class="nav-item" v-bind:class="{active:tab=='Account'}" v-on:click="changeTab('Account')">
+                <a class="nav-link" href="#Account" id="AccountBtn">Accounts</a>
+            </li>
+            <li class="nav-item" v-bind:class="{active:tab=='Buying'}" v-on:click="changeTab('Buying')">
+                <a class="nav-link" href="#Buying" id="BuyingBtn">Purchase Status</a>
+            </li>
+            <li class="nav-item" v-bind:class="{active:tab=='Selling'}" v-on:click="changeTab('Selling')">
+                <a class="nav-link" href="#Selling" id="SellingBtn">Sold Item Status</a>
+            </li>
+    </ul>
+    <div v-show="tab=='Account'" id="Account">
+        <div class="jumbotron">
+            <h1 class="display-4">Account Information</h1>
+            <p class="lead">This is where you can manage your Zip Clothing account information. View your email, name, and logout, all from one central location. All about you and the things you love to do can be viewed here.</p>
+            <hr class="hr-4">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="alert alert-danger" role="alert">
+                        <center>
+                        <a href="#" class="alert-link">Username</a>: {{user.username}}
+                        </center>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="alert alert-danger" role="alert">
+                        <center>
+                        <a href="#" class="alert-link">Email</a>: {{user.email}}</center>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="alert alert-danger" role="alert">
+                        <center>
+                        <a href="#" class="alert-link">Date Joined</a>: {{user.date_joined}}
+                            </center>
+
+                    </div>
+                </div>
+
+            </div>
+            <div class="pull-right">
+                <p class="lead">
+                <a class="btn btn-danger btn-lg" href="#" role="button">Logout</a>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div v-show="tab=='Buying'" id="Buying">
+        <div class="jumbotron">
+            <h1 class="display-4">Purchases</h1>
+            <p class="lead">This is where you can manage any products that you have bought from sellers on Zip Clothing.</p>
+            <hr class="hr-4">
+            <div class="row">
+                {% comment %} Waiting For Shippment {% endcomment %}
+                <div class="col-md-6">
+                    <div class="alert alert-danger" role="alert">
+                        <center>
+                        <div class="heads alert-link">Waiting To Be Shipped</div>
+                        </center>
+                        {% for item in buy_transactions %}
+                            {% if item.Shipped == False %}
+                                <div class="alert alert-danger sub">
+                                    <strong>{{item.Product.Name}}</strong> from {{item.Product.Seller}}
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                        
+                    </div>
+                </div>
+                {% comment %} Confirm Delivery {% endcomment %}
+                <div class="col-md-6">
+                    <div class="alert alert-danger" role="alert">
+                        <center>
+                        <div class=" heads alert-link">Confirm Delivary</div>
+                        </center>
+                        {% for item in buy_transactions %}
+                            {% if item.Shipped == True and item.Complete == False %}
+                                <div class="alert alert-danger sub">
+                                    <a id="card_head_title" href="{% url 'Conf-Receive' item.id %}"><strong>{{item.Product.Name}}</strong> from {{item.Product.Seller}}</a>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                        
+                    </div>
+                </div>
+
+            </div>
+            <div class="pull-right">
+                <p class="lead">
+                <a class="btn btn-danger btn-lg" href="#" role="button">Logout</a>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div v-show="tab=='Selling'" id="Selling">
+        <div class="jumbotron">
+                <h1 class="display-4">Sold Items</h1>
+                <p class="lead">This is where you can manage any products sold to customers via Zip Trading.</p>
+                <hr class="hr-4">
+                <div class="row">
+                    {% comment %} Listed {% endcomment %}
+                    <div class="col-md-3">
+                        <div class="alert alert-danger" role="alert">
+                            <center>
+                            <div class="heads alert-link">Listed</div>
+                            </center>
+                            {% for item in user_posted_products %}
+                                <div class="alert alert-danger sub">
+                                    <a id="sub_head" href="{% url 'Detail_Product' item.id%}"><strong>{{item.Name}}</strong></a>
+                                    <p class="card-text">Posted on <em>{{item.get_date}}</em></p>
+                                </div>
+                            {% endfor %}
+
+                            
+                            
+                        </div>
+                    </div>
+                    {% comment %} Confirm Shippment {% endcomment %}
+                    <div class="col-md-3">
+                        <div class="alert alert-danger" role="alert">
+                            <center>
+                            <div class=" heads alert-link">Confirm Shippment</div>
+                            </center>
+                            {% for item in user_transactions %}
+                                {% if item.Shipped == False %}
+                                    <div  class="alert alert-danger sub">
+                                        <a id="card_head_title" href="{% url 'Conf-Shipping' item.id%}"><strong>{{item.Product.Name}}</strong> from {{item.Product.Seller}}</a>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                            
+                        </div>
+                    </div>
+                    {% comment %} Shipping {% endcomment %}
+                    <div class="col-md-3">
+                        <div class="alert alert-danger" role="alert">
+                            <center>
+                            <div class=" heads alert-link">Shipping</div>
+                            </center>
+                            {% for item in user_transactions %}
+                                {% if item.Shipped == True and item.Complete == False %}
+                                    <div href="" class="alert alert-danger sub">
+                                        <strong>{{item.Product.Name}}</strong> from {{item.Product.Seller}}
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                            
+                        </div>
+                    </div>
+                    {% comment %} Complete {% endcomment %}
+                    <div class="col-md-3">
+                        <div class="alert alert-danger" role="alert">
+                            <center>
+                            <div class=" heads alert-link">Complete (Claim Cash)</div>
+                            </center>
+                            {% for item in user_transactions %}
+                                {% if item.Complete == True %}
+                                    <div class="alert alert-danger sub">
+                                        <a id="card_head_title" href="{% url 'Claim-Cash' item.id %}"><strong>{{item.Product.Name}}</strong> from {{item.Product.Seller}}</a>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="pull-right">
+                    <p class="lead">
+                    <a class="btn btn-danger btn-lg" href="#" role="button">Logout</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var vApp = new Vue({
+        el: "#vApp",
+        data: {
+            tab: "Account",
+            msg: "message"
+        },
+        methods: {
+            changeTab: function(tabName){
+                this.tab = tabName
+            }
+        },
+        delimiters: ["[[","]]"],
+    })
+    console.log(vApp)
+</script>
+<style>
+    .jumbotron{
+        background-color: black
+    }
+    .hr-4 {
+        border-color:white
+    }
+    a {
+        color: white
+    }
+        /* unvisited link */
+    a:link {
+        color: white;
+    }
+
+    /* visited link */
+    a:visited {
+        color: white;
+    }
+
+    /* mouse over link */
+    a:hover {
+        color: white;
+    }
+
+    /* selected link */
+    a:active {
+        color: white;
+    }
+    .sub {
+        border-color:black
+    }
+    .heads{
+        margin-bottom: 1%
+    }
+    #sub_head{
+        color:black
+    }
+    #card_head_title{
+        color:black
+    }
+
+</style>
+{% endblock %}
