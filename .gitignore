@@ -3,3 +3,4 @@ include/
 Lib/
 Scripts/
 tcl/
+.vscode/
